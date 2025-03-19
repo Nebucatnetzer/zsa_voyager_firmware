@@ -3,6 +3,8 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
+    zsa.url = "github:zsa/qmk_firmware/firmware24";
+    zsa.flake = false;
   };
 
   outputs =
@@ -20,12 +22,13 @@
         ];
         text = builtins.readFile ./update_source.sh;
       };
+      firmware = pkgs.callPackage ./firmware { zsa = inputs.zsa; };
     in
     {
-      devShells."${system}".default = pkgs.mkShellNoCC {
+      packages."${system}".default = firmware;
+      devShells."${system}".default = pkgs.mkShell {
         packages = [
           pkgs.keymapp
-          pkgs.qmk
           pkgs.shellcheck
           pkgs.shfmt
           update-source

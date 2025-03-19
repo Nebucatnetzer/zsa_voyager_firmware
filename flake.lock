@@ -18,7 +18,25 @@
     },
     "root": {
       "inputs": {
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs",
+        "zsa": "zsa"
+      }
+    },
+    "zsa": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1739263649,
+        "narHash": "sha256-jAHIf/C7c5mZ3b0RdNooiWN43Nc4xwrGQ0TSf6QIB7A=",
+        "owner": "zsa",
+        "repo": "qmk_firmware",
+        "rev": "12c7a1f4b16633182592f5f181ff91609aacca69",
+        "type": "github"
+      },
+      "original": {
+        "owner": "zsa",
+        "ref": "firmware24",
+        "repo": "qmk_firmware",
+        "type": "github"
       }
     }
   },
