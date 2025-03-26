@@ -1,31 +1,19 @@
 # Taken from here: https://github.com/NobbZ/qmk_firmware/blob/main/firmware.nix
 {
-  stdenv,
-  fetchFromGitHub,
-  zsa,
-  qmk,
-  git,
-  gcc-arm-embedded,
-  pkgsCross,
   avrdude,
   dfu-programmer,
   dfu-util,
+  gcc-arm-embedded,
+  git,
+  pkgsCross,
+  qmk,
+  qmkSource,
+  stdenv,
 }:
 let
-  firmware = fetchFromGitHub {
-    name = "zsa-firmware-${zsa.rev}-source";
-    owner = "zsa";
-    repo = "qmk_firmware";
-    inherit (zsa) rev;
-    fetchSubmodules = true;
-    sha256 = "sha256-J0lKc7bmwzwrKUx6q5CGZFTM4a1xvqgyCnpxBa9nFbI=";
-  };
-
   kb = "voyager";
-  km = "nobbz";
-
+  km = "default";
   version = "jZZQr4";
-
   firmwareSrc = ../source;
 in
 stdenv.mkDerivation {
@@ -42,10 +30,10 @@ stdenv.mkDerivation {
   ];
 
   srcs = [
-    firmware
+    qmkSource
     firmwareSrc
   ];
-  sourceRoot = firmware.name;
+  sourceRoot = qmkSource.name;
 
   dontAutoPatchelf = true;
 
