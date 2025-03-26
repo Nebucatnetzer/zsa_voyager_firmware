@@ -91,3 +91,4 @@ result-*
 
 /.direnv/
 /zsa/
+/qmk_firmware/

@@ -5,16 +5,16 @@
   dfu-util,
   gcc-arm-embedded,
   git,
+  keymapSource,
   pkgsCross,
   qmk,
-  qmkSource,
+  qmkFirmware,
   stdenv,
 }:
 let
   kb = "voyager";
-  km = "default";
+  km = "source";
   version = "jZZQr4";
-  firmwareSrc = ../source;
 in
 stdenv.mkDerivation {
   name = "${kb}_${km}_${version}.bin";
@@ -30,10 +30,10 @@ stdenv.mkDerivation {
   ];
 
   srcs = [
-    qmkSource
-    firmwareSrc
+    qmkFirmware
+    keymapSource
   ];
-  sourceRoot = qmkSource.name;
+  sourceRoot = qmkFirmware.name;
 
   dontAutoPatchelf = true;
 
@@ -55,7 +55,6 @@ stdenv.mkDerivation {
   '';
 
   buildPhase = ''
-    qmk setup
     qmk compile -kb ${kb} -km ${km}
   '';
 
