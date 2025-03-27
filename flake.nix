@@ -22,7 +22,13 @@
         ];
         text = builtins.readFile ./update_source.sh;
       };
-      keymapSource = ./source;
+      build-firmware = pkgs.writeShellApplication {
+        name = "build-firmware";
+        runtimeInputs = [
+          pkgs.curl
+        ];
+        text = builtins.readFile ./build_firmware.sh;
+      };
       qmkFirmware = pkgs.fetchFromGitHub {
         name = "zsa-firmware-${inputs.zsa.rev}-source";
         owner = "zsa";
@@ -31,10 +37,8 @@
         fetchSubmodules = true;
         sha256 = "sha256-J0lKc7bmwzwrKUx6q5CGZFTM4a1xvqgyCnpxBa9nFbI=";
       };
-      firmware = pkgs.callPackage ./firmware { inherit keymapSource qmkFirmware; };
     in
     {
-      packages."${system}".default = firmware;
       devShells."${system}".default = pkgs.mkShell {
         packages = [
           pkgs.avrdude
@@ -47,17 +51,14 @@
           pkgs.rsync
           pkgs.shellcheck
           pkgs.shfmt
+          build-firmware
           update-source
         ];
         shellHook = ''
           DEVENV_ROOT="$PWD"
           export DEVENV_ROOT
-          mkdir -p qmk_firmware
-          rsync -r --delete --chmod +w ${qmkFirmware}/ qmk_firmware/
-          chmod +w -R qmk_firmware
-          rm -rf qmk_firmware/keyboards/zsa/voyager/keymaps/source
-          mkdir -p qmk_firmware/keyboards/zsa/voyager/keymaps
-          cp -rv source qmk_firmware/keyboards/zsa/voyager/keymaps/source
+          QMK_FIRMWARE=${qmkFirmware}
+          export QMK_FIRMWARE
         '';
       };
     };
