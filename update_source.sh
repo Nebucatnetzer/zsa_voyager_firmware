@@ -16,7 +16,7 @@ function updateBranch() {
 
 function downloadSource() {
     echo "--- Downloading source ---"
-    local -r voyagerSource="https://oryx.zsa.io/source/jZZQr4"
+    local -r voyagerSource="https://oryx.zsa.io/source/$1"
     curl -L "$voyagerSource" -o source.zip
     echo ""
 }
