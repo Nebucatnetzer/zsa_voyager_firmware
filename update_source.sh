@@ -51,9 +51,9 @@ function mergeBranch() {
 
 function main() {
     switchBranch
-    downloadSource
+    downloadSource "$1"
     extractSource
     updateSource
     mergeBranch
 }
-main
+main "$@"
